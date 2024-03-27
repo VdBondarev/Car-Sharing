@@ -1,6 +1,7 @@
-package car.sharing.dto;
+package car.sharing.dto.user;
 
-public record UserSearchParametersDto(
+public record UserResponseDto(
+        Long id,
         String firstName,
         String lastName,
         String email

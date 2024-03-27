@@ -11,3 +11,5 @@ databaseChangeLog:
       file: db/changelog/changes/05-create-user_roles-table.yaml
   - include:
       file: db/changelog/changes/06-link-added-user-to-manager-role.yaml
+  - include:
+      file: db/changelog/changes/07-create-cars-table.yaml

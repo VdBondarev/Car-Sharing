@@ -1,7 +1,7 @@
 package car.sharing.security;
 
-import car.sharing.dto.UserLoginRequestDto;
-import car.sharing.dto.UserLoginResponseDto;
+import car.sharing.dto.user.UserLoginRequestDto;
+import car.sharing.dto.user.UserLoginResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

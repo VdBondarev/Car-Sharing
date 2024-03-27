@@ -1,4 +1,4 @@
-package car.sharing.dto;
+package car.sharing.dto.user;
 
 import car.sharing.annotation.StartsWithCapital;
 import jakarta.validation.constraints.Email;

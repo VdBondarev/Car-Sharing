@@ -1,11 +1,11 @@
 package car.sharing.controller;
 
-import car.sharing.dto.UserResponseDto;
-import car.sharing.dto.UserSearchParametersDto;
-import car.sharing.dto.UserUpdateInfoRequestDto;
-import car.sharing.dto.UserUpdatedRolesResponseDto;
+import car.sharing.dto.user.UserResponseDto;
+import car.sharing.dto.user.UserSearchParametersDto;
+import car.sharing.dto.user.UserUpdateInfoRequestDto;
+import car.sharing.dto.user.UserUpdatedRolesResponseDto;
 import car.sharing.model.User;
-import car.sharing.service.UserService;
+import car.sharing.service.user.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
