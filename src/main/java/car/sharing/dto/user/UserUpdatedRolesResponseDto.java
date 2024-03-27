@@ -1,4 +1,4 @@
-package car.sharing.dto;
+package car.sharing.dto.user;
 
 import java.util.Set;
 import lombok.Data;

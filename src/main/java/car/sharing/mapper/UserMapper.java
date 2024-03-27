@@ -1,10 +1,10 @@
 package car.sharing.mapper;
 
 import car.sharing.config.MapperConfig;
-import car.sharing.dto.UserRegistrationRequestDto;
-import car.sharing.dto.UserResponseDto;
-import car.sharing.dto.UserUpdateInfoRequestDto;
-import car.sharing.dto.UserUpdatedRolesResponseDto;
+import car.sharing.dto.user.UserRegistrationRequestDto;
+import car.sharing.dto.user.UserResponseDto;
+import car.sharing.dto.user.UserUpdateInfoRequestDto;
+import car.sharing.dto.user.UserUpdatedRolesResponseDto;
 import car.sharing.model.Role;
 import car.sharing.model.User;
 import java.util.Set;

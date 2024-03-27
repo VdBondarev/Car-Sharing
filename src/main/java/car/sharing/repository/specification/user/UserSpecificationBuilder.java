@@ -1,6 +1,6 @@
 package car.sharing.repository.specification.user;
 
-import car.sharing.dto.UserSearchParametersDto;
+import car.sharing.dto.user.UserSearchParametersDto;
 import car.sharing.model.User;
 import car.sharing.repository.specification.SpecificationBuilder;
 import lombok.RequiredArgsConstructor;

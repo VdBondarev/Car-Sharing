@@ -1,12 +1,12 @@
 package car.sharing.controller;
 
-import car.sharing.dto.UserLoginRequestDto;
-import car.sharing.dto.UserLoginResponseDto;
-import car.sharing.dto.UserRegistrationRequestDto;
-import car.sharing.dto.UserResponseDto;
+import car.sharing.dto.user.UserLoginRequestDto;
+import car.sharing.dto.user.UserLoginResponseDto;
+import car.sharing.dto.user.UserRegistrationRequestDto;
+import car.sharing.dto.user.UserResponseDto;
 import car.sharing.exception.RegistrationException;
 import car.sharing.security.AuthenticationService;
-import car.sharing.service.UserService;
+import car.sharing.service.user.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
