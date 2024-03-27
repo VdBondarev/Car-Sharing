@@ -15,11 +15,14 @@ public class AdminHelpResponseService implements AdminResponseService {
                 
                 To get info about:
                 1). A user
+                2). A car
                 Send me a message with the following format:
                 
                 Get info about a user with id: ...
                 
-                Instead of ... paste user id.
+                Get info about a car with id: ...
+                
+                Instead of ... paste id.
                 ***
                 """;
     }
