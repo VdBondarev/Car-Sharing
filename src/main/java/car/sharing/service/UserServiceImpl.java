@@ -11,6 +11,7 @@ import car.sharing.model.Role;
 import car.sharing.model.User;
 import car.sharing.repository.UserRepository;
 import car.sharing.repository.specification.user.UserSpecificationBuilder;
+import car.sharing.telegram.strategy.NotificationStrategy;
 import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Set;
@@ -23,12 +24,15 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
+    private static final String TELEGRAM = "telegram";
+    private static final String ROLE_UPDATING = "role updating";
     private static final String ROLE_CUSTOMER = "ROLE_CUSTOMER";
     private static final String ROLE_MANAGER = "ROLE_MANAGER";
     private final UserRepository userRepository;
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
     private final UserSpecificationBuilder userSpecificationBuilder;
+    private final NotificationStrategy<User> notificationStrategy;
 
     @Override
     public UserResponseDto register(UserRegistrationRequestDto requestDto)
@@ -58,6 +62,7 @@ public class UserServiceImpl implements UserService {
             user.setRoles(Set.of(new Role(1L), new Role(2L)));
         }
         userRepository.save(user);
+        sendMessage(TELEGRAM, ROLE_UPDATING, user, null);
         return userMapper.toUpdatedResponseDto(user);
     }
 
@@ -99,6 +104,17 @@ public class UserServiceImpl implements UserService {
                 || (parametersDto.firstName() == null || parametersDto.firstName().isEmpty())
                 && (parametersDto.lastName() == null || parametersDto.lastName().isEmpty())
                 && (parametersDto.email() == null || parametersDto.email().isEmpty());
+    }
+
+    private void sendMessage(
+            String notificationService,
+            String messageType,
+            User user,
+            Long chatId) {
+        notificationStrategy.getNotificationService(
+                        notificationService, messageType
+                )
+                .sendMessage(user, chatId);
     }
 
     private boolean alreadyIs(User user, String roleName) {
