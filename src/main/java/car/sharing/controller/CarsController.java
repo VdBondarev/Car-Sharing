@@ -41,7 +41,7 @@ public class CarsController {
     @GetMapping("/search")
     @Operation(summary = "Search cars by params",
             description = "Endpoint for searching cars by params with pageable sorting")
-    public List<CarResponseDto> findByParams(
+    public List<CarResponseDto> search(
             @RequestBody @Valid CarSearchParametersDto parametersDto,
             Pageable pageable) {
         return carService.search(parametersDto, pageable);
