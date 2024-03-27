@@ -7,7 +7,6 @@ import car.sharing.dto.UserResponseDto;
 import car.sharing.exception.RegistrationException;
 import car.sharing.security.AuthenticationService;
 import car.sharing.service.UserService;
-import com.stripe.exception.StripeException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -29,7 +28,7 @@ public class AuthenticationController {
     @Operation(summary = "Registration for any user", description = "Endpoint for registration")
     public UserResponseDto register(
             @RequestBody @Valid UserRegistrationRequestDto requestDto)
-            throws RegistrationException, StripeException {
+            throws RegistrationException {
         return userService.register(requestDto);
     }
 
