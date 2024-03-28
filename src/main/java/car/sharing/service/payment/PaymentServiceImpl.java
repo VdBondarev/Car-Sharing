@@ -173,7 +173,8 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     private Payment updateStatus(Payment.Status status, Long userId) {
-        Payment payment = paymentRepository.findByStatusAndUserId(Payment.Status.PENDING, userId)
+        Payment payment = paymentRepository
+                .findByStatusAndUserId(Payment.Status.PENDING, userId)
                 .orElseThrow(() -> new EntityNotFoundException(
                         "Can't find user's payment"));
         payment.setStatus(status);

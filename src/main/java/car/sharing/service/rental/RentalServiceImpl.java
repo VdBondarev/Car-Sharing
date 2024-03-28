@@ -118,6 +118,13 @@ public class RentalServiceImpl implements RentalService {
 
     @Override
     public void cancel(User user) {
+        if (rentalRepository
+                .findRentalByStatusAndUserId(
+                        Rental.Status.LASTING,
+                        user.getId()).isPresent()) {
+            throw new IllegalArgumentException(
+                    "You can't cancel a lasting rental. You can only return it.");
+        }
         rentalRepository
                 .findRentalByStatusAndUserId(
                         Rental.Status.PENDING,
