@@ -362,6 +362,8 @@ class RentalServiceImplTest {
 
         Payment payment = createPayment();
 
+        when(rentalRepository.findRentalByStatusAndUserId(Rental.Status.LASTING, user.getId()))
+                .thenReturn(Optional.empty());
         when(rentalRepository.findRentalByStatusAndUserId(Rental.Status.PENDING, user.getId()))
                 .thenReturn(Optional.of(rental));
         when(paymentRepository.findByRentalId(rental.getId())).thenReturn(Optional.of(payment));
