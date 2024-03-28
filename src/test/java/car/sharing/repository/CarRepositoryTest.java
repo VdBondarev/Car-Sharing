@@ -60,14 +60,13 @@ class CarRepositoryTest extends LinksHolder {
     }
 
     private Car createCar(Long id, String brand, String model, Car.Type type, BigDecimal dailyFee) {
-        Car car = new Car.Builder()
-                .setModel(model)
-                .setType(type)
-                .setInventory(10)
-                .setDailyFee(dailyFee)
-                .setBrand(brand)
+        return Car.builder()
+                .model(model)
+                .type(type)
+                .inventory(10)
+                .dailyFee(dailyFee)
+                .brand(brand)
+                .id(id)
                 .build();
-        car.setId(id);
-        return car;
     }
 }

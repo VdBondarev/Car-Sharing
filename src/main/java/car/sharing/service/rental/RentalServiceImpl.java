@@ -193,12 +193,12 @@ public class RentalServiceImpl implements RentalService {
     }
 
     private Rental createRental(User user, int daysToRent, Long carId) {
-        return new Rental.Builder()
-                .setRentalDate(LocalDate.now())
-                .setUserId(user.getId())
-                .setRequiredReturnDate(LocalDate.now().plusDays(daysToRent))
-                .setCarId(carId)
-                .setStatus(Rental.Status.PENDING)
+        return Rental.builder()
+                .rentalDate(LocalDate.now())
+                .userId(user.getId())
+                .requiredReturnDate(LocalDate.now().plusDays(daysToRent))
+                .carId(carId)
+                .status(Rental.Status.PENDING)
                 .build();
     }
 
@@ -209,14 +209,14 @@ public class RentalServiceImpl implements RentalService {
             User user,
             Payment.Type type)
             throws MalformedURLException {
-        return new Payment.Builder()
-                .setType(type)
-                .setAmountToPay(price)
-                .setRentalId(rental.getId())
-                .setSessionId(session.getId())
-                .setSessionUrl(new URL(session.getUrl()))
-                .setStatus(Payment.Status.PENDING)
-                .setUserId(user.getId())
+        return Payment.builder()
+                .type(type)
+                .amountToPay(price)
+                .rentalId(rental.getId())
+                .sessionId(session.getId())
+                .sessionUrl(new URL(session.getUrl()))
+                .status(Payment.Status.PENDING)
+                .userId(user.getId())
                 .build();
     }
 

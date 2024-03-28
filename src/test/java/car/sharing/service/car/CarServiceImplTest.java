@@ -65,14 +65,14 @@ class CarServiceImplTest {
                 BigDecimal.valueOf(10.99)
         );
 
-        Car car = new Car.Builder()
-                .setModel(requestDto.model())
-                .setType(Car.Type.UNIVERSAL)
-                .setInventory(requestDto.inventory())
-                .setDailyFee(requestDto.dailyFee())
-                .setBrand(requestDto.brand())
+        Car car = Car.builder()
+                .model(requestDto.model())
+                .type(Car.Type.UNIVERSAL)
+                .inventory(requestDto.inventory())
+                .dailyFee(requestDto.dailyFee())
+                .brand(requestDto.brand())
+                .id(1L)
                 .build();
-        car.setId(1L);
 
         CarResponseDto expected = new CarResponseDto(
                 car.getId(),
@@ -312,14 +312,14 @@ class CarServiceImplTest {
     }
 
     private Car createCar(Long id, String brand, String model) {
-        Car car = new Car.Builder()
-                .setBrand(brand)
-                .setDailyFee(BigDecimal.TEN)
-                .setInventory(10)
-                .setType(Car.Type.UNIVERSAL)
-                .setModel(model)
+        Car car = Car.builder()
+                .brand(brand)
+                .dailyFee(BigDecimal.TEN)
+                .inventory(10)
+                .type(Car.Type.UNIVERSAL)
+                .model(model)
+                .id(id)
                 .build();
-        car.setId(id);
         return car;
     }
 }

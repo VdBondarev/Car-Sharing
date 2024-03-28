@@ -239,13 +239,13 @@ class RentalRepositoryTest extends LinksHolder {
             Long carId,
             Long userId,
             Rental.Status status) {
-        return new Rental.Builder()
-                .setRentalDate(LocalDate.parse(rentalDate))
-                .setUserId(userId)
-                .setStatus(status)
-                .setCarId(carId)
-                .setRequiredReturnDate(LocalDate.parse(requiredReturnDate))
-                .setActualReturnDate(
+        return Rental.builder()
+                .rentalDate(LocalDate.parse(rentalDate))
+                .userId(userId)
+                .status(status)
+                .carId(carId)
+                .requiredReturnDate(LocalDate.parse(requiredReturnDate))
+                .actualReturnDate(
                         actualReturnDate != null ? LocalDate.parse(actualReturnDate) : null)
                 .build();
     }

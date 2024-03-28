@@ -144,14 +144,14 @@ public class PaymentServiceImpl implements PaymentService {
             Session session,
             User user)
             throws MalformedURLException {
-        return new Payment.Builder()
-                .setType(Payment.Type.PAYMENT)
-                .setAmountToPay(price)
-                .setRentalId(rental.getId())
-                .setSessionId(session.getId())
-                .setSessionUrl(new URL(session.getUrl()))
-                .setStatus(Payment.Status.PENDING)
-                .setUserId(user.getId())
+        return Payment.builder()
+                .type(Payment.Type.PAYMENT)
+                .amountToPay(price)
+                .rentalId(rental.getId())
+                .sessionId(session.getId())
+                .sessionUrl(new URL(session.getUrl()))
+                .status(Payment.Status.PENDING)
+                .userId(user.getId())
                 .build();
     }
 

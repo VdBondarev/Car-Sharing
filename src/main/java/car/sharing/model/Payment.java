@@ -12,6 +12,8 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.net.URL;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -23,7 +25,9 @@ import org.hibernate.annotations.Where;
 @Table(name = "payments")
 @SQLDelete(sql = "UPDATE payments SET is_deleted = TRUE WHERE id = ?")
 @Where(clause = "is_deleted = FALSE")
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 public class Payment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -62,16 +66,6 @@ public class Payment {
     @Column(name = "is_deleted")
     private boolean isDeleted = false;
 
-    private Payment(Builder builder) {
-        this.amountToPay = builder.amountToPay;
-        this.rentalId = builder.rentalId;
-        this.userId = builder.userId;
-        this.sessionId = builder.sessionId;
-        this.sessionUrl = builder.sessionUrl;
-        this.type = builder.type;
-        this.status = builder.status;
-    }
-
     public enum Type {
         PAYMENT,
         FINE;
@@ -98,55 +92,6 @@ public class Payment {
                 }
             }
             throw new IllegalArgumentException("Unknown enum value: " + value);
-        }
-    }
-
-    public static class Builder {
-        private Long userId;
-        private Long rentalId;
-        private Status status;
-        private Type type;
-        private URL sessionUrl;
-        private String sessionId;
-        private BigDecimal amountToPay;
-
-        public Builder setUserId(Long userId) {
-            this.userId = userId;
-            return this;
-        }
-
-        public Builder setRentalId(Long rentalId) {
-            this.rentalId = rentalId;
-            return this;
-        }
-
-        public Builder setStatus(Status status) {
-            this.status = status;
-            return this;
-        }
-
-        public Builder setType(Type type) {
-            this.type = type;
-            return this;
-        }
-
-        public Builder setSessionUrl(URL sessionUrl) {
-            this.sessionUrl = sessionUrl;
-            return this;
-        }
-
-        public Builder setSessionId(String sessionId) {
-            this.sessionId = sessionId;
-            return this;
-        }
-
-        public Builder setAmountToPay(BigDecimal amountToPay) {
-            this.amountToPay = amountToPay;
-            return this;
-        }
-
-        public Payment build() {
-            return new Payment(this);
         }
     }
 }
