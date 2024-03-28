@@ -30,6 +30,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -70,7 +71,7 @@ public class PaymentServiceImpl implements PaymentService {
                 user.getId())
                 .isPresent()) {
             throw new IllegalArgumentException("You already have a pending payment."
-                    + " You should pay for that first or cancel your rental");
+                    + " You should pay for that first or cancel (or return) your rental");
         }
         Rental rental = rentalRepository.findRentalByStatusAndUserId(
                         Rental.Status.PENDING,
@@ -98,6 +99,7 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     @Override
+    @Transactional
     public PaymentResponseDto success(User user) {
         Payment payment = updateStatus(Payment.Status.PAID, user.getId());
         if (rentalRepository.findRentalByStatusAndUserId(
@@ -105,6 +107,7 @@ public class PaymentServiceImpl implements PaymentService {
                 user.getId()).isPresent()) {
             Rental rental =
                     updateRentalStatus(payment, Rental.Status.LASTING);
+            rentalRepository.save(rental);
             rentalNotificationStrategy.getNotificationService(
                             TELEGRAM, RENTAL_CREATION
                     )
@@ -120,12 +123,14 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     @Override
+    @Transactional
     public void cancel(User user) {
         Payment payment = updateStatus(Payment.Status.CANCELED, user.getId());
         paymentRepository.save(payment);
         Rental rental = updateRentalStatus(payment, Rental.Status.CANCELED);
         rentalRepository.save(rental);
-        updateInventory(rental);
+        Car car = updateInventory(rental);
+        carRepository.save(car);
     }
 
     @Override
@@ -155,12 +160,12 @@ public class PaymentServiceImpl implements PaymentService {
                 .build();
     }
 
-    private void updateInventory(Rental rental) {
+    private Car updateInventory(Rental rental) {
         Car car = carRepository.findById(rental.getCarId())
                 .orElseThrow(() -> new EntityNotFoundException(
                         "Can't find a car by id " + rental.getCarId()));
         car.setInventory(car.getInventory() + ONE);
-        carRepository.save(car);
+        return car;
     }
 
     private Rental updateRentalStatus(Payment payment, Rental.Status status) {
@@ -168,7 +173,6 @@ public class PaymentServiceImpl implements PaymentService {
                 .orElseThrow(() -> new EntityNotFoundException(
                         "Can't find a rental by id " + payment.getRentalId()));
         rental.setStatus(status);
-        rentalRepository.save(rental);
         return rental;
     }
 
@@ -182,7 +186,7 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     @Scheduled(cron = "0 0 0 * * ?")
-    private void markAllExpiredRentalsAndPaymentsAsCanceled() {
+    protected void markAllExpiredRentalsAndPaymentsAsCanceled() {
         rentalRepository.findAllByStatusAndRentalDate(
                         Rental.Status.PENDING,
                         LocalDate.now().minusDays(ONE)

@@ -27,6 +27,7 @@ import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -44,6 +45,7 @@ public class RentalServiceImpl implements RentalService {
     private final NotificationStrategy<Rental> notificationStrategy;
 
     @Override
+    @Transactional
     public RentalResponseDto addRental(
             User user,
             Long carId,
@@ -106,7 +108,9 @@ public class RentalServiceImpl implements RentalService {
                         "Can't find car by id " + rental.getCarId()));
         rental.setActualReturnDate(now);
         if (requiredReturnDate.isBefore(now)) {
-            createFinePayment(requiredReturnDate, now, car, rental, user);
+            Payment payment =
+                    createFinePayment(requiredReturnDate, now, car, rental, user);
+            paymentRepository.save(payment);
         }
         car.setInventory(car.getInventory() + ONE);
         rental.setStatus(Rental.Status.RETURNED);
@@ -117,6 +121,7 @@ public class RentalServiceImpl implements RentalService {
     }
 
     @Override
+    @Transactional
     public void cancel(User user) {
         if (rentalRepository
                 .findRentalByStatusAndUserId(
@@ -220,7 +225,7 @@ public class RentalServiceImpl implements RentalService {
                 .build();
     }
 
-    private void createFinePayment(
+    private Payment createFinePayment(
             LocalDate requiredReturnDate,
             LocalDate now,
             Car car,
@@ -236,7 +241,7 @@ public class RentalServiceImpl implements RentalService {
         Payment payment = createPayment(
                 fine.multiply(BigDecimal.valueOf(0.01).setScale(2, RoundingMode.HALF_UP)),
                 rental, session, user, Payment.Type.FINE);
-        paymentRepository.save(payment);
+        return payment;
     }
 
     private void sendMessage(
