@@ -16,7 +16,8 @@ public class AdminHelpResponseService implements AdminResponseService {
                 To get info about:
                 1). A user
                 2). A car
-                2). A rental
+                3). A rental
+                4). A payment
                 Send me a message with the following format:
                 
                 Get info about a user with id: ...
@@ -24,6 +25,8 @@ public class AdminHelpResponseService implements AdminResponseService {
                 Get info about a car with id: ...
                 
                 Get info about a rental with id: ...
+                
+                Get info about a payment with id: ...
                 
                 Instead of ... paste id.
                 ***

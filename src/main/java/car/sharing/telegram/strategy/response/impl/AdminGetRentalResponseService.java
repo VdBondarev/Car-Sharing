@@ -31,6 +31,7 @@ public class AdminGetRentalResponseService implements AdminResponseService {
                     Rental date: %s,
                     Required return date: %s,
                     Actual return date: %s.
+                    ***
                     """;
         return String.format(
                 message,

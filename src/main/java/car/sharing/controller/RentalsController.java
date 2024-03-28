@@ -3,9 +3,11 @@ package car.sharing.controller;
 import car.sharing.dto.rental.RentalResponseDto;
 import car.sharing.model.User;
 import car.sharing.service.rental.RentalService;
+import com.stripe.exception.StripeException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.constraints.Min;
+import java.net.MalformedURLException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -66,7 +68,9 @@ public class RentalsController {
             description = "Endpoint for setting a the return date of the car. "
                     + "If car is returned later than expected, then user should pay fine")
     public RentalResponseDto setReturnDate(
-            Authentication authentication) {
+            Authentication authentication)
+            throws StripeException,
+            MalformedURLException {
         return rentalService.setReturnDate(getUser(authentication));
     }
 

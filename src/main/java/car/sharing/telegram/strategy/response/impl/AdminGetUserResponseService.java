@@ -28,6 +28,7 @@ public class AdminGetUserResponseService implements AdminResponseService {
                     First name: %s,
                     Last name: %s,
                     Email: %s.
+                    ***
                     """;
         return String.format(
                 message,
