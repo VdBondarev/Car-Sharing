@@ -27,6 +27,7 @@ public class AdminGetCarResponseService implements AdminResponseService {
                     
                     Brand: %s,
                     Model: %s.
+                    ***
                     """;
         return String.format(
                 message,

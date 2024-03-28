@@ -30,6 +30,7 @@ public class AdminGetPaymentResponseService implements AdminResponseService {
                 Status: %s,
                 Type: %s,
                 Amount to pay: %s
+                ***
                 """;
         return String.format(message,
                 payment.get().getUserId(),
