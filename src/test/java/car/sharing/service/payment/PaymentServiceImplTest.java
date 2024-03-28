@@ -117,13 +117,13 @@ class PaymentServiceImplTest {
 
     private Payment createPayment(Payment.Status status, long rentalId, BigDecimal price)
             throws MalformedURLException {
-        return new Payment.Builder()
-                .setSessionUrl(new URL(SESSION_URL_EXAMPLE))
-                .setSessionId(SESSION_ID_EXAMPLE)
-                .setStatus(status)
-                .setType(Payment.Type.PAYMENT)
-                .setUserId(1L)
-                .setRentalId(rentalId)
+        return Payment.builder()
+                .sessionUrl(new URL(SESSION_URL_EXAMPLE))
+                .sessionId(SESSION_ID_EXAMPLE)
+                .status(status)
+                .type(Payment.Type.PAYMENT)
+                .userId(1L)
+                .rentalId(rentalId)
                 .build();
     }
 

@@ -404,22 +404,22 @@ class RentalServiceImplTest {
     }
 
     private Payment createFinePayment() {
-        return new Payment.Builder()
-                .setRentalId(1L)
-                .setType(Payment.Type.FINE)
-                .setStatus(Payment.Status.PENDING)
-                .setUserId(1L)
-                .setAmountToPay(BigDecimal.TEN)
+        return Payment.builder()
+                .rentalId(1L)
+                .type(Payment.Type.FINE)
+                .status(Payment.Status.PENDING)
+                .userId(1L)
+                .amountToPay(BigDecimal.TEN)
                 .build();
     }
 
     private Car createCar(String brand, String model) {
-        return new Car.Builder()
-                .setModel(model)
-                .setType(Car.Type.UNIVERSAL)
-                .setInventory(10)
-                .setDailyFee(BigDecimal.TEN)
-                .setBrand(brand)
+        return Car.builder()
+                .model(model)
+                .type(Car.Type.UNIVERSAL)
+                .inventory(10)
+                .dailyFee(BigDecimal.TEN)
+                .brand(brand)
                 .build();
     }
 
@@ -428,12 +428,12 @@ class RentalServiceImplTest {
             Long carId,
             Long userId,
             int daysToRent) {
-        return new Rental.Builder()
-                .setStatus(status)
-                .setRentalDate(LocalDate.now())
-                .setCarId(carId)
-                .setUserId(userId)
-                .setRequiredReturnDate(LocalDate.now().plusDays(daysToRent))
+        return Rental.builder()
+                .status(status)
+                .rentalDate(LocalDate.now())
+                .carId(carId)
+                .userId(userId)
+                .requiredReturnDate(LocalDate.now().plusDays(daysToRent))
                 .build();
     }
 
@@ -448,12 +448,12 @@ class RentalServiceImplTest {
     }
 
     private Payment createPayment() {
-        return new Payment.Builder()
-                .setRentalId(1L)
-                .setType(Payment.Type.PAYMENT)
-                .setStatus(Payment.Status.PENDING)
-                .setUserId(1L)
-                .setAmountToPay(BigDecimal.TEN)
+        return Payment.builder()
+                .rentalId(1L)
+                .type(Payment.Type.PAYMENT)
+                .status(Payment.Status.PENDING)
+                .userId(1L)
+                .amountToPay(BigDecimal.TEN)
                 .build();
     }
 }

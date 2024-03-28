@@ -12,6 +12,8 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -23,6 +25,8 @@ import org.hibernate.annotations.Where;
 @Table(name = "cars")
 @SQLDelete(sql = "UPDATE cars SET is_deleted = TRUE WHERE id = ?")
 @Where(clause = "is_deleted = FALSE")
+@AllArgsConstructor
+@Builder
 @NoArgsConstructor
 public class Car {
     @Id
@@ -51,14 +55,6 @@ public class Car {
     @Column(name = "is_deleted")
     private boolean isDeleted = false;
 
-    private Car(Builder builder) {
-        this.inventory = builder.inventory;
-        this.brand = builder.brand;
-        this.model = builder.model;
-        this.dailyFee = builder.dailyFee;
-        this.type = builder.type;
-    }
-
     public enum Type {
         SEDAN,
         SUV,
@@ -72,46 +68,6 @@ public class Car {
                 }
             }
             throw new IllegalArgumentException("Unknown enum value: " + value);
-        }
-    }
-
-    public static class Builder {
-        private String model;
-        private String brand;
-        @Enumerated(EnumType.STRING)
-        private Type type;
-        @Min(0)
-        private Integer inventory;
-        @Min(0)
-        private BigDecimal dailyFee;
-
-        public Builder setModel(String model) {
-            this.model = model;
-            return this;
-        }
-
-        public Builder setBrand(String brand) {
-            this.brand = brand;
-            return this;
-        }
-
-        public Builder setType(Type type) {
-            this.type = type;
-            return this;
-        }
-
-        public Builder setInventory(Integer inventory) {
-            this.inventory = inventory;
-            return this;
-        }
-
-        public Builder setDailyFee(BigDecimal dailyFee) {
-            this.dailyFee = dailyFee;
-            return this;
-        }
-
-        public Car build() {
-            return new Car(this);
         }
     }
 }

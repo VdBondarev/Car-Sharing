@@ -27,6 +27,7 @@ import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -44,6 +45,7 @@ public class RentalServiceImpl implements RentalService {
     private final NotificationStrategy<Rental> notificationStrategy;
 
     @Override
+    @Transactional
     public RentalResponseDto addRental(
             User user,
             Long carId,
@@ -106,7 +108,9 @@ public class RentalServiceImpl implements RentalService {
                         "Can't find car by id " + rental.getCarId()));
         rental.setActualReturnDate(now);
         if (requiredReturnDate.isBefore(now)) {
-            createFinePayment(requiredReturnDate, now, car, rental, user);
+            Payment payment =
+                    createFinePayment(requiredReturnDate, now, car, rental, user);
+            paymentRepository.save(payment);
         }
         car.setInventory(car.getInventory() + ONE);
         rental.setStatus(Rental.Status.RETURNED);
@@ -117,6 +121,7 @@ public class RentalServiceImpl implements RentalService {
     }
 
     @Override
+    @Transactional
     public void cancel(User user) {
         if (rentalRepository
                 .findRentalByStatusAndUserId(
@@ -193,12 +198,12 @@ public class RentalServiceImpl implements RentalService {
     }
 
     private Rental createRental(User user, int daysToRent, Long carId) {
-        return new Rental.Builder()
-                .setRentalDate(LocalDate.now())
-                .setUserId(user.getId())
-                .setRequiredReturnDate(LocalDate.now().plusDays(daysToRent))
-                .setCarId(carId)
-                .setStatus(Rental.Status.PENDING)
+        return Rental.builder()
+                .rentalDate(LocalDate.now())
+                .userId(user.getId())
+                .requiredReturnDate(LocalDate.now().plusDays(daysToRent))
+                .carId(carId)
+                .status(Rental.Status.PENDING)
                 .build();
     }
 
@@ -209,18 +214,18 @@ public class RentalServiceImpl implements RentalService {
             User user,
             Payment.Type type)
             throws MalformedURLException {
-        return new Payment.Builder()
-                .setType(type)
-                .setAmountToPay(price)
-                .setRentalId(rental.getId())
-                .setSessionId(session.getId())
-                .setSessionUrl(new URL(session.getUrl()))
-                .setStatus(Payment.Status.PENDING)
-                .setUserId(user.getId())
+        return Payment.builder()
+                .type(type)
+                .amountToPay(price)
+                .rentalId(rental.getId())
+                .sessionId(session.getId())
+                .sessionUrl(new URL(session.getUrl()))
+                .status(Payment.Status.PENDING)
+                .userId(user.getId())
                 .build();
     }
 
-    private void createFinePayment(
+    private Payment createFinePayment(
             LocalDate requiredReturnDate,
             LocalDate now,
             Car car,
@@ -236,7 +241,7 @@ public class RentalServiceImpl implements RentalService {
         Payment payment = createPayment(
                 fine.multiply(BigDecimal.valueOf(0.01).setScale(2, RoundingMode.HALF_UP)),
                 rental, session, user, Payment.Type.FINE);
-        paymentRepository.save(payment);
+        return payment;
     }
 
     private void sendMessage(

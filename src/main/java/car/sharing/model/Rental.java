@@ -10,6 +10,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDate;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
@@ -21,6 +23,8 @@ import org.hibernate.annotations.Where;
 @SQLDelete(sql = "UPDATE rentals SET is_deleted = TRUE WHERE id = ?")
 @Where(clause = "is_deleted = FALSE")
 @NoArgsConstructor
+@Builder
+@AllArgsConstructor
 public class Rental {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -63,58 +67,6 @@ public class Rental {
                 }
             }
             throw new IllegalArgumentException("Unknown enum value: " + value);
-        }
-    }
-
-    private Rental(Builder builder) {
-        this.actualReturnDate = builder.actualReturnDate;
-        this.carId = builder.carId;
-        this.rentalDate = builder.rentalDate;
-        this.requiredReturnDate = builder.requiredReturnDate;
-        this.userId = builder.userId;
-        this.status = builder.status;
-    }
-
-    public static class Builder {
-        private LocalDate rentalDate;
-        private LocalDate requiredReturnDate;
-        private LocalDate actualReturnDate;
-        private Long carId;
-        private Long userId;
-        private Status status;
-
-        public Builder setRentalDate(LocalDate rentalRate) {
-            this.rentalDate = rentalRate;
-            return this;
-        }
-
-        public Builder setRequiredReturnDate(LocalDate requiredReturnDate) {
-            this.requiredReturnDate = requiredReturnDate;
-            return this;
-        }
-
-        public Builder setActualReturnDate(LocalDate actualReturnDate) {
-            this.actualReturnDate = actualReturnDate;
-            return this;
-        }
-
-        public Builder setCarId(Long carId) {
-            this.carId = carId;
-            return this;
-        }
-
-        public Builder setUserId(Long userId) {
-            this.userId = userId;
-            return this;
-        }
-
-        public Rental build() {
-            return new Rental(this);
-        }
-
-        public Builder setStatus(Status status) {
-            this.status = status;
-            return this;
         }
     }
 }
