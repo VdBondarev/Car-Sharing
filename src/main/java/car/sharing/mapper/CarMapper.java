@@ -21,16 +21,16 @@ public interface CarMapper {
     void toModel(@MappingTarget Car car, CarUpdateDto updateDto);
 
     @AfterMapping
-    default void setType(@MappingTarget Car car, CreateCarRequestDto requestDto) {
-        Car.Type type = Car.Type.fromString(requestDto.type());
-        car.setType(type);
-    }
-
-    @AfterMapping
     default void setType(@MappingTarget Car car, CarUpdateDto updateDto) {
         if (updateDto.type() != null) {
             Car.Type type = Car.Type.fromString(updateDto.type());
             car.setType(type);
         }
+    }
+
+    @AfterMapping
+    default void setType(@MappingTarget Car.CarBuilder carBuilder, CreateCarRequestDto requestDto) {
+        Car.Type type = Car.Type.fromString(requestDto.type());
+        carBuilder.type(type);
     }
 }
