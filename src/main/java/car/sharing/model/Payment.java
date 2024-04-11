@@ -69,8 +69,8 @@ public class Payment {
     public enum Type {
         PAYMENT,
         FINE;
-        public static Car.Type fromString(String value) {
-            for (Car.Type type : Car.Type.values()) {
+        public static Type fromString(String value) {
+            for (Type type : Type.values()) {
                 if (type.name().equalsIgnoreCase(value)) {
                     return type;
                 }

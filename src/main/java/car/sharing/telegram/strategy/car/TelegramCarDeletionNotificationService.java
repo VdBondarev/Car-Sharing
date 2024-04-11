@@ -12,6 +12,10 @@ public class TelegramCarDeletionNotificationService
     private static final String TELEGRAM = "telegram";
     private static final String CAR_DELETION = "Car deletion";
 
+    public TelegramCarDeletionNotificationService() {
+        super();
+    }
+
     @Override
     public void sendMessage(Car car, Long chatId) {
         String message = "The car with id " + car.getId() + " is deleted.";

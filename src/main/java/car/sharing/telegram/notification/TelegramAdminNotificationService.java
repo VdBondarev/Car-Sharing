@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class TelegramAdminNotificationService implements NotificationService {
+    private static final String TELEGRAM = "Telegram";
     private final CarSharingTelegramBot telegramBot;
     private final RentalRepository rentalRepository;
     @Value("${default.telegram.admin.chat.id}")
@@ -25,7 +26,7 @@ public class TelegramAdminNotificationService implements NotificationService {
 
     @Override
     public boolean isApplicable(String notificationService) {
-        return notificationService.equalsIgnoreCase("telegram");
+        return notificationService.equalsIgnoreCase(TELEGRAM);
     }
 
     @Scheduled(cron = "0 0 9 * * *")

@@ -12,6 +12,10 @@ public class TelegramCarUpdatingNotificationService
     private static final String TELEGRAM = "telegram";
     private static final String CAR_UPDATING = "Car updating";
 
+    public TelegramCarUpdatingNotificationService() {
+        super();
+    }
+
     @Override
     public void sendMessage(Car car, Long chatId) {
         String message = """

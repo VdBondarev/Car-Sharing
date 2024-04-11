@@ -1,4 +1,4 @@
-package car.sharing.repository.specification;
+package car.sharing.repository.specification.car;
 
 import java.util.List;
 import org.springframework.data.jpa.domain.Specification;

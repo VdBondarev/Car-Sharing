@@ -143,6 +143,33 @@ public class PaymentServiceImpl implements PaymentService {
         return paymentMapper.toResponseDto(payment);
     }
 
+    @Scheduled(cron = "0 0 0 * * ?")
+    @Transactional
+    public void markAllExpiredRentalsAndPaymentsAsCanceled() {
+        rentalRepository.findAllByStatusAndRentalDate(
+                        Rental.Status.PENDING,
+                        LocalDate.now().minusDays(ONE)
+                )
+                .forEach(rental -> {
+                    rental.setStatus(Rental.Status.CANCELED);
+                    rental.setDeleted(true);
+                    rentalRepository.save(rental);
+                    Car car = carRepository.findById(rental.getCarId())
+                            .orElseThrow(() -> new EntityNotFoundException(
+                                    "Can't find a car by id " + rental.getCarId()));
+                    car.setInventory(car.getInventory() + ONE);
+                    carRepository.save(car);
+                    paymentRepository.findByRentalId(rental.getId())
+                            .ifPresent((payment) -> {
+                                if (!payment.getType().equals(Payment.Type.FINE)) {
+                                    payment.setStatus(Payment.Status.EXPIRED);
+                                    payment.setDeleted(true);
+                                    paymentRepository.save(payment);
+                                }
+                            });
+                });
+    }
+
     private Payment createPayment(
             BigDecimal price,
             Rental rental,
@@ -183,31 +210,5 @@ public class PaymentServiceImpl implements PaymentService {
                         "Can't find user's payment"));
         payment.setStatus(status);
         return payment;
-    }
-
-    @Scheduled(cron = "0 0 0 * * ?")
-    protected void markAllExpiredRentalsAndPaymentsAsCanceled() {
-        rentalRepository.findAllByStatusAndRentalDate(
-                        Rental.Status.PENDING,
-                        LocalDate.now().minusDays(ONE)
-                )
-                .forEach(rental -> {
-                    rental.setStatus(Rental.Status.CANCELED);
-                    rental.setDeleted(true);
-                    rentalRepository.save(rental);
-                    Car car = carRepository.findById(rental.getCarId())
-                            .orElseThrow(() -> new EntityNotFoundException(
-                                    "Can't find a car by id " + rental.getCarId()));
-                    car.setInventory(car.getInventory() + ONE);
-                    carRepository.save(car);
-                    paymentRepository.findByRentalId(rental.getId())
-                            .ifPresent((payment) -> {
-                                if (!payment.getType().equals(Payment.Type.FINE)) {
-                                    payment.setStatus(Payment.Status.EXPIRED);
-                                    payment.setDeleted(true);
-                                    paymentRepository.save(payment);
-                                }
-                            });
-                });
     }
 }

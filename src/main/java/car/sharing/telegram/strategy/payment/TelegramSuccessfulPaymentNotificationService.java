@@ -12,6 +12,10 @@ public class TelegramSuccessfulPaymentNotificationService
     private static final String TELEGRAM = "telegram";
     private static final String SUCCESSFUL_PAYMENT = "successful payment";
 
+    public TelegramSuccessfulPaymentNotificationService() {
+        super();
+    }
+
     @Override
     public void sendMessage(Payment payment, Long chatId) {
         String message = """

@@ -1,8 +1,6 @@
 package car.sharing.repository.specification.car;
 
 import car.sharing.model.Car;
-import car.sharing.repository.specification.InSpecificationProvider;
-import car.sharing.repository.specification.InSpecificationProviderManager;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
