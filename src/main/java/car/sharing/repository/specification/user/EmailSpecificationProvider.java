@@ -1,7 +1,6 @@
 package car.sharing.repository.specification.user;
 
 import car.sharing.model.User;
-import car.sharing.repository.specification.LikeSpecificationProvider;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 

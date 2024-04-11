@@ -13,6 +13,10 @@ public class TelegramRoleUpdatingNotificationService
     private static final String TELEGRAM = "telegram";
     private static final String ROLE_UPDATING = "Role updating";
 
+    public TelegramRoleUpdatingNotificationService() {
+        super();
+    }
+
     @Override
     public void sendMessage(User user, Long chatId) {
         String message = "User roles were updated to "

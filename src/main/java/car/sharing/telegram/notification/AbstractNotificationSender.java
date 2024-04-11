@@ -1,10 +1,12 @@
 package car.sharing.telegram.notification;
 
 import java.util.List;
+import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
+@NoArgsConstructor
 public class AbstractNotificationSender {
     private static final String LINE_SEPARATOR = System.lineSeparator();
     private static final String MESSAGE_SEPARATOR = "***";

@@ -12,6 +12,10 @@ public class TelegramRentalCreationNotificationService
     private static final String TELEGRAM = "telegram";
     private static final String RENTAL_CREATION = "Rental creation";
 
+    public TelegramRentalCreationNotificationService() {
+        super();
+    }
+
     @Override
     public void sendMessage(Rental rental, Long chatId) {
         String message = """

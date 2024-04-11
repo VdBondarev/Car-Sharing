@@ -12,6 +12,10 @@ public class TelegramRentalReturningNotificationService
     private static final String TELEGRAM = "telegram";
     private static final String RENTAL_RETURNING = "Rental returning";
 
+    public TelegramRentalReturningNotificationService() {
+        super();
+    }
+
     @Override
     public void sendMessage(Rental rental, Long chatId) {
         String message = """
